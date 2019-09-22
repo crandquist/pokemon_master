@@ -7,6 +7,9 @@ class Pokemon():
         self.current_health = level * 5
         self.is_knocked_out = False 
 
+    def __repr__(self):
+        return '{name} is level {level} and has {health} hit points remaining.'.format(name = self.name, level = self.level, health = self.current_health)
+
     def knock_out(self):
         self.current_health = 0
         self.is_knocked_out = True
@@ -58,6 +61,9 @@ class Trainer():
         self.pokemons = pokemon_list
         self.potions = num_potions
         self.current_pokemon = 0
+
+    def __repr__(self):
+        return "{name} has {pokemon} Pokemon and {potions} potion(s). {active} is their active Pokemon.".format(name = self.name, pokemon = len(self.pokemons), potions = self.potions, active = self.pokemons[self.current_pokemon].name)
     
     def use_potion(self):
         if self.potions > 0:
@@ -89,6 +95,7 @@ class Trainer():
 
 #Pokemon
 charmander = Pokemon("Charmander", "Fire", 9)
+print(charmander)
 squirtle = Pokemon("Squirtle", "Water", 10)
 bulbasaur = Pokemon("Bulbasaur", "Grass", 12)
 growlithe = Pokemon("Growlithe", "Fire")
@@ -97,5 +104,6 @@ magikarp = Pokemon("Magikarp", "Water")
 
 #Trainers
 cat = Trainer("Cat", [growlithe, squirtle], 1)
-atra = Trainer("Atra", [charmander, caterpie], 1)
-grimus = Trainer("Grimus", [bulbasaur, magikarp], 1)
+print(cat)
+grimus = Trainer("Grimus", [charmander, caterpie], 1)
+atra = Trainer("Atra", [bulbasaur, magikarp], 1)

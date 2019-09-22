@@ -51,3 +51,11 @@ class Pokemon():
             damage = self.level
             other_pokemon.lose_health(damage)
             print(self.name + ' attacked ' + other_pokemon.name + ' for ' + str(damage) + '!')
+
+class Trainer():
+    def __init__(self, name, pokemon_list, num_potions):
+        self.name = name
+        self.pokemons = pokemon_list
+        self.potions = num_potions
+        self.current_pokemon = 0
+        

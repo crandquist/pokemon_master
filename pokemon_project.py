@@ -58,4 +58,44 @@ class Trainer():
         self.pokemons = pokemon_list
         self.potions = num_potions
         self.current_pokemon = 0
-        
+    
+    def use_potion(self):
+        if self.potions > 0:
+            self.potions -= 1
+            active_pokemon = self.pokemons[self.current_pokemon]
+            active_pokemon.current_health = active_pokemon.max_health
+            print(self.name + ' used a potion!')
+            print(active_pokemon + ' now has ' + str(active_pokemon.max_health)+ '!')
+        else:
+            return 'You do not have any potions!'
+    
+    def attack_trainer(self, other_trainer):
+        my_pokemon = self.pokemons[self.current_pokemon]
+        their_pokemon = other_trainer.pokemons[other_trainer.current_pokemon]
+        my_pokemon.attack(their_pokemon)
+
+    def switch_pokemon(self, new_active):
+        for pokemon in self.pokemons:
+            if new_active == pokemon and pokemon.is_knocked_out == False:
+                self.current_pokemon = self.pokemons[new_active].index
+            elif new_active == pokemon and pokemon.is_knocked_out == True:
+                print(new_active + ' is knocked out and is not able to be your active Pokemon.')
+            else: 
+                print('You do not have this Pokemon.')
+
+
+
+#Time to test all of the things!
+
+#Pokemon
+charmander = Pokemon("Charmander", "Fire", 9)
+squirtle = Pokemon("Squirtle", "Water", 10)
+bulbasaur = Pokemon("Bulbasaur", "Grass", 12)
+growlithe = Pokemon("Growlithe", "Fire")
+caterpie = Pokemon("Caterpie", "Grass")
+magikarp = Pokemon("Magikarp", "Water")
+
+#Trainers
+cat = Trainer("Cat", [growlithe, squirtle], 1)
+atra = Trainer("Atra", [charmander, caterpie], 1)
+grimus = Trainer("Grimus", [bulbasaur, magikarp], 1)

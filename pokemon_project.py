@@ -75,7 +75,17 @@ class Pokemon():
                 self.level_up()
             return
 
-        
+class Charmander(Pokemon):
+    def __init__(self, level = 1):
+        super().__init__("Charmander", "Fire", level)
+
+class Squirtle(Pokemon):
+    def __init__(self, level = 1):
+        super().__init__("Squirtle", "Water", level)
+
+class Bulbasaur(Pokemon):
+    def __init__(self, level = 1):
+        super().__init__("Bulbasaur", "Grass", level)
 
 class Trainer():
     def __init__(self, name, pokemon_list, num_potions):
@@ -133,20 +143,3 @@ grimus = Trainer("Grimus", [charmander, caterpie], 1)
 atra = Trainer("Atra", [bulbasaur, magikarp], 1)
 
 #Training Grounds
-#grimus.switch_pokemon(caterpie)
-#cat.switch_pokemon(squirtle)
-#atra.switch_pokemon(pikachu)
-
-cat.attack_trainer(grimus)
-grimus.attack_trainer(cat)
-cat.use_potion()
-cat.attack_trainer(atra)
-cat.attack_trainer(atra)
-cat.attack_trainer(atra)
-cat.attack_trainer(atra)
-cat.attack_trainer(atra)
-cat.attack_trainer(atra)
-cat.attack_trainer(atra)
-cat.attack_trainer(atra)
-cat.attack_trainer(atra)
-

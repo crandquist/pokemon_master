@@ -6,33 +6,42 @@ class Pokemon():
         self.max_health = level * 5
         self.current_health = level * 5
         self.is_knocked_out = False 
+        self.experience = 0
 
     def __repr__(self):
         return '{name} is level {level} and has {health} hit points remaining.'.format(name = self.name, level = self.level, health = self.current_health)
 
+    def level_up(self):
+        if self.experience >= 10:
+            self.level += 1
+            return print('{name} is now level {level}!'.format(name = self.name, level = self.level))
+
     def knock_out(self):
         self.current_health = 0
         self.is_knocked_out = True
-        return self.name + ' is knocked out!'
+        return print(self.name + ' was knocked out!')
 
-    def lose_health(self, health_lost):
-        if health_lost > self.current_health:
+    def lose_health(self, damage):
+        if damage > self.current_health:
             self.current_health = 0
-            self.knock_out
+            self.knock_out()
             return
         else:
-            self.current_health -= health_lost
-            return self.name + ' now has ' + str(self.current_health) + ' health.'
+            self.current_health -= damage
+            return print('{name} has {health} hit points!'.format(name = self.name, health = self.current_health))
     
     def gain_health(self, health_gain):
+        if self.is_knocked_out == True:
+            self.revive()
         self.current_health += health_gain
         if self.current_health >= self.max_health:
             self.current_health = self.max_health
-        return self.name + ' now has ' + str(self.current_health) + ' health.'
+        return print('{name} has {health} hit points!'.format(name = self.name, health = self.current_health)) 
 
     def revive(self):
         if self.current_health == 0:
             self.current_health = 1
+            self.is_knocked_out = False
             print(self.name + ' has been revived!')
     
     def attack(self, other_pokemon):
@@ -41,19 +50,32 @@ class Pokemon():
             return
         if (self.pokemon_type == "Fire" and other_pokemon.pokemon_type == "Grass") or (self.pokemon_type == "Grass" and other_pokemon.pokemon_type == "Water") or (self.pokemon_type == "Water" and other_pokemon.pokemon_type == "Fire"):
             damage = self.level * 2
-            other_pokemon.lose_health(damage)
-            print(self.name + ' attacked ' + other_pokemon.name + ' for ' + str(damage) + '!')
+            print(self.name + ' attacked ' + other_pokemon.name + ' for ' + str(damage) + ' damage!')
             print('It was super effective!')
+            other_pokemon.lose_health(damage)
+            self.experience += 1
+            if self.experience >= 10:
+                self.level_up()
             return
         if (self.pokemon_type == "Grass" and other_pokemon.pokemon_type == "Fire") or (self.pokemon_type == "Water" and other_pokemon.pokemon_type == "Grass") or (self.pokemon_type == "Fire" and other_pokemon.pokemon_type == "Water"):
             damage = round(self.level / 2)
-            other_pokemon.lose_health(damage)
-            print(self.name + ' attacked ' + other_pokemon.name + ' for ' + str(damage) + '!')
+            print(self.name + ' attacked ' + other_pokemon.name + ' for ' + str(damage) + ' damage!')
             print('It was not very effective!')
+            other_pokemon.lose_health(damage)
+            self.experience += 1
+            if self.experience >= 10:
+                self.level_up()
+            return
         if (self.pokemon_type == other_pokemon.pokemon_type):
             damage = self.level
+            print(self.name + ' attacked ' + other_pokemon.name + ' for ' + str(damage) + ' damage!')
             other_pokemon.lose_health(damage)
-            print(self.name + ' attacked ' + other_pokemon.name + ' for ' + str(damage) + '!')
+            self.experience += 1
+            if self.experience >= 10:
+                self.level_up()
+            return
+
+        
 
 class Trainer():
     def __init__(self, name, pokemon_list, num_potions):
@@ -69,9 +91,8 @@ class Trainer():
         if self.potions > 0:
             self.potions -= 1
             active_pokemon = self.pokemons[self.current_pokemon]
-            active_pokemon.current_health = active_pokemon.max_health
             print(self.name + ' used a potion!')
-            print(active_pokemon + ' now has ' + str(active_pokemon.max_health)+ '!')
+            active_pokemon.gain_health(active_pokemon.max_health)
         else:
             return 'You do not have any potions!'
     
@@ -81,13 +102,17 @@ class Trainer():
         my_pokemon.attack(their_pokemon)
 
     def switch_pokemon(self, new_active):
-        for pokemon in self.pokemons:
-            if new_active == pokemon and pokemon.is_knocked_out == False:
-                self.current_pokemon = self.pokemons[new_active].index
-            elif new_active == pokemon and pokemon.is_knocked_out == True:
-                print(new_active + ' is knocked out and is not able to be your active Pokemon.')
-            else: 
-                print('You do not have this Pokemon.')
+        if new_active in self.pokemons:
+            for pokemon in self.pokemons:
+                if new_active.name == pokemon.name and pokemon.is_knocked_out == False:
+                    self.current_pokemon = self.pokemons.index(new_active)
+                    print('{name}, I choose you!'.format(name = new_active))
+                    return
+                elif new_active.name == pokemon.name and pokemon.is_knocked_out == True:
+                    print(new_active.name + ' is knocked out and is not able to be your active Pokemon.')
+                    return
+        else:
+            print('You do not have this pokemon.')
 
 
 
@@ -95,15 +120,33 @@ class Trainer():
 
 #Pokemon
 charmander = Pokemon("Charmander", "Fire", 9)
-print(charmander)
 squirtle = Pokemon("Squirtle", "Water", 10)
 bulbasaur = Pokemon("Bulbasaur", "Grass", 12)
 growlithe = Pokemon("Growlithe", "Fire")
 caterpie = Pokemon("Caterpie", "Grass")
 magikarp = Pokemon("Magikarp", "Water")
+pikachu = Pokemon("Pikachu", "Electic")
 
 #Trainers
 cat = Trainer("Cat", [growlithe, squirtle], 1)
-print(cat)
 grimus = Trainer("Grimus", [charmander, caterpie], 1)
 atra = Trainer("Atra", [bulbasaur, magikarp], 1)
+
+#Training Grounds
+#grimus.switch_pokemon(caterpie)
+#cat.switch_pokemon(squirtle)
+#atra.switch_pokemon(pikachu)
+
+cat.attack_trainer(grimus)
+grimus.attack_trainer(cat)
+cat.use_potion()
+cat.attack_trainer(atra)
+cat.attack_trainer(atra)
+cat.attack_trainer(atra)
+cat.attack_trainer(atra)
+cat.attack_trainer(atra)
+cat.attack_trainer(atra)
+cat.attack_trainer(atra)
+cat.attack_trainer(atra)
+cat.attack_trainer(atra)
+

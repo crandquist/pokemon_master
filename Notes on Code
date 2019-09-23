@@ -1,0 +1,3 @@
+In the switch_pokemon function in the Trainer class I have had difficulty figuring out how to switch the current_pokemon which is an integer equal to the index of the active Pokemon by inputting the name of the Pokemon.
+I believe I have solved this problem by using index(). I was using it incorrectly at first thinking that self.pokemons[new_active].index() was the proper syntax.
+The proper syntax to use to solve this problem is actually self.pokemons.index(new_active)

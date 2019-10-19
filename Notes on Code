@@ -1,3 +1,6 @@
 In the switch_pokemon function in the Trainer class I have had difficulty figuring out how to switch the current_pokemon which is an integer equal to the index of the active Pokemon by inputting the name of the Pokemon.
 I believe I have solved this problem by using index(). I was using it incorrectly at first thinking that self.pokemons[new_active].index() was the proper syntax.
 The proper syntax to use to solve this problem is actually self.pokemons.index(new_active)
+
+I'm coming back to this literally weeks later, but I wanted to take note of the problems I had with reviving a Pokemon. I was unsure why the potions object was failing to revive a Pokemon successfully. After using a potion I would try to use a Pokemon that had been revived to attack and got a response that that Pokemon had fainted. 
+The error I had made in this instance was that I had failed to change is_knocked_out back to False after raising the Pokemon's health. So while it had full health points, it was still reading as being knocked out.

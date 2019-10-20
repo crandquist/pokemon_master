@@ -4,3 +4,5 @@ The proper syntax to use to solve this problem is actually self.pokemons.index(n
 
 I'm coming back to this literally weeks later, but I wanted to take note of the problems I had with reviving a Pokemon. I was unsure why the potions object was failing to revive a Pokemon successfully. After using a potion I would try to use a Pokemon that had been revived to attack and got a response that that Pokemon had fainted. 
 The error I had made in this instance was that I had failed to change is_knocked_out back to False after raising the Pokemon's health. So while it had full health points, it was still reading as being knocked out.
+
+I think I have learned what I need to make this game functional. It's totally ridiculous that it was this simple! How is it that in the months that I have been working on Python, I am only now coming across input()? Time to start adding some user input into this game!
